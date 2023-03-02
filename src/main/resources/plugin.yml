@@ -1,0 +1,10 @@
+name: GodOfWealth
+version: '${project.version}'
+depend: [Vault]
+softdepend: [PlayerPoints]
+main: com.mcstaralliance.godofwealth.GodOfWealth
+commands:
+  gow:
+permissions:
+  gow:
+    default: op

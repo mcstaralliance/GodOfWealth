@@ -1,0 +1,10 @@
+lucky-player: undefined
+selection:
+  time: 12
+  # time is hour
+  hasCompletedToday: false
+reward-after: 13
+# reward time must be earlier than selection time.
+reward-type: money
+# available types: money, points
+reward-amount: 1000
