@@ -20,7 +20,7 @@ public class PlayerJoinListener implements Listener {
         if (player.getName().equalsIgnoreCase(config.getString("lucky-player"))) {
             List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
             for (Player playerToReward : players) {
-                rewardPlayer(playerToReward, "money");
+                rewardPlayer(playerToReward, config.getString("reward-type"));
             }
             config.set("lucky-player", null);
             GodOfWealth.getInstance().saveConfig();
