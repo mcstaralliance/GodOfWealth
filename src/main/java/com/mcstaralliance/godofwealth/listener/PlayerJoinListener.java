@@ -1,42 +1,33 @@
 package com.mcstaralliance.godofwealth.listener;
 
 import com.mcstaralliance.godofwealth.GodOfWealth;
-import org.bukkit.Bukkit;
+import com.mcstaralliance.godofwealth.util.RewardPlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalTime;
+
 
 public class PlayerJoinListener implements Listener {
     private final FileConfiguration config = GodOfWealth.getInstance().getConfig();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        if (player.getName().equalsIgnoreCase(config.getString("lucky-player"))) {
-            List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
-            for (Player playerToReward : players) {
-                rewardPlayer(playerToReward, config.getString("reward-type"));
-            }
-            config.set("lucky-player", null);
-            GodOfWealth.getInstance().saveConfig();
-
+        LocalTime now = LocalTime.now();
+        if (config.getBoolean("reward-completed-today")) {
+            return;
         }
-    }
+        if (now.getHour() > config.getInt("reward-after") && now.getHour() < config.getInt("selection.time")) {
+            Player player = event.getPlayer();
+            if (player.getName().equalsIgnoreCase(config.getString("lucky-player"))) {
+                RewardPlayer.rewardAllPlayers();
+                config.set("lucky-player", null);
+                GodOfWealth.getInstance().saveConfig();
 
-    public void rewardPlayer(Player player, String type) {
-        switch (type) {
-            case "money":
-                GodOfWealth.getEconomy().depositPlayer(player, config.getInt("reward-amount"));
-                break;
-            case "points":
-                GodOfWealth.getPlayerPoints().give(player.getUniqueId(), config.getInt("reward-amount"));
-            default:
-                break;
+            }
         }
     }
 }

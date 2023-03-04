@@ -1,7 +1,9 @@
 package com.mcstaralliance.godofwealth.task;
 
 import com.mcstaralliance.godofwealth.GodOfWealth;
+import com.mcstaralliance.godofwealth.util.RewardPlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,9 +36,14 @@ public class CheckRunnable extends BukkitRunnable {
                 randomNumber = random.nextInt(players.size());
             }
             config.set("lucky-player", players.get(randomNumber).getName());
+            String messageToBroadcast = ChatColor.translateAlternateColorCodes('&', config.getString("lang.broadcast-selected-player").replaceAll("%player%", players.get(randomNumber).getName()));
+            Bukkit.broadcastMessage(messageToBroadcast);
             GodOfWealth.getInstance().saveConfig();
-
-
+        }
+        if (now.getHour() > config.getInt("reward-after") && now.getHour() < config.getInt("selection.time")) {
+            if (Bukkit.getPlayerExact(config.getString("lucky-player")).isOnline()) {
+                RewardPlayer.rewardAllPlayers();
+            }
         }
     }
 }
