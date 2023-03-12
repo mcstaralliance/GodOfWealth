@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RewardPlayer {
+public class RewardUtil {
     private static final FileConfiguration config = GodOfWealth.getInstance().getConfig();
 
     public static void rewardPlayer(Player player, String type) {
@@ -18,6 +18,7 @@ public class RewardPlayer {
                 break;
             case "points":
                 GodOfWealth.getPlayerPoints().give(player.getUniqueId(), config.getInt("reward-amount"));
+                break;
             default:
                 break;
         }

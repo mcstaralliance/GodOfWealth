@@ -6,5 +6,9 @@ main: com.mcstaralliance.godofwealth.GodOfWealth
 commands:
   gow:
 permissions:
-  gow:
+  gow.panel:
+    default: true
+  gow.set-player:
+    default: op
+  gow.reload:
     default: op

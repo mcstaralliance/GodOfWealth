@@ -1,4 +1,5 @@
 lucky-player: undefined
+lucky-player-real-name:
 selection:
   time: 13
   # time is hour
@@ -9,6 +10,6 @@ reward-after: 12
 reward-type: money
 # available types: money, points
 reward-amount: 1000
-# reward-completed-today: false
 lang:
   broadcast-selected-player: '%player% 已被选为财神爷'
+  menu-name: "GodOfWealth Panel"

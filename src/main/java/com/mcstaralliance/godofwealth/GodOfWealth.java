@@ -1,8 +1,9 @@
 package com.mcstaralliance.godofwealth;
 
 import com.mcstaralliance.godofwealth.command.MyCommand;
-import com.mcstaralliance.godofwealth.listener.PlayerJoinListener;
+import com.mcstaralliance.godofwealth.listener.InventoryClickListener;
 import com.mcstaralliance.godofwealth.task.CheckRunnable;
+import com.mcstaralliance.godofwealth.util.ConfigUtil;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
@@ -52,16 +53,18 @@ public final class GodOfWealth extends JavaPlugin {
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        ConfigUtil.checkConfig();
         if (!setupEconomy()) {
             getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-            getServer().getPluginManager().disablePlugin(instance);
+            getServer().getPluginManager().disablePlugin(getInstance());
             return;
         }
         setupPlayerPoints();
         Bukkit.getPluginCommand("gow").setExecutor(new MyCommand());
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), instance);
+        Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), getInstance());
         CheckRunnable checkRunnable = new CheckRunnable();
-        checkRunnable.runTaskTimer(instance, 0L, 6000L);
+        checkRunnable.runTaskTimer(getInstance(), 5L, 6000L);
+
     }
 
     @Override

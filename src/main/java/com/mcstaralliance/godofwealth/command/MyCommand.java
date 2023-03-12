@@ -1,11 +1,13 @@
 package com.mcstaralliance.godofwealth.command;
 
 import com.mcstaralliance.godofwealth.GodOfWealth;
+import com.mcstaralliance.godofwealth.gui.Panel;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 public class MyCommand implements CommandExecutor {
     @Override
@@ -23,8 +25,18 @@ public class MyCommand implements CommandExecutor {
                 config.set("lucky-player", args[1]);
                 GodOfWealth.getInstance().saveConfig();
                 return true;
+            case "panel":
+                if (sender instanceof Player) {
+                    Panel panel = new Panel();
+                    Player player = (Player) sender;
+                    player.openInventory(panel.getInventory());
+                } else {
+                    sender.sendMessage(ChatColor.RED + "Only players can execute this command.");
+                }
+                return true;
             default:
                 sender.sendMessage(ChatColor.RED + "你输入的指令不存在");
+                break;
         }
         return false;
     }
