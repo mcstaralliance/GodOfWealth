@@ -12,4 +12,18 @@ public class ConfigUtil {
             GodOfWealth.getInstance().getServer().getPluginManager().disablePlugin(GodOfWealth.getInstance());
         }
     }
+
+    public static void clearData() {
+        config.set("selection.hasCompletedToday", false);
+        config.set("lucky-player", null);
+        config.set("lucky-player-real-name", null);
+        GodOfWealth.getInstance().saveConfig();
+    }
+
+    public static void finishReward() {
+        config.set("lucky-player", null);
+        config.set("lucky-player-real-name", null);
+        GodOfWealth.getInstance().saveConfig();
+    }
 }
+

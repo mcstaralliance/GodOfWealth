@@ -1,6 +1,7 @@
 package com.mcstaralliance.godofwealth.task;
 
 import com.mcstaralliance.godofwealth.GodOfWealth;
+import com.mcstaralliance.godofwealth.util.ConfigUtil;
 import com.mcstaralliance.godofwealth.util.RewardUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,41 +18,54 @@ import java.util.UUID;
 public class CheckRunnable extends BukkitRunnable {
     private final FileConfiguration config = GodOfWealth.getInstance().getConfig();
 
+
+    public void saveSelectionData(Player player) {
+        config.set("selection.hasCompletedToday", true);
+        config.set("lucky-player", player.getUniqueId());
+        config.set("lucky-player-real-name", player.getName());
+        GodOfWealth.getInstance().saveConfig();
+    }
+
+    private void broadcastSelectedMessage(Player player) {
+        String lang = config.getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
+        String message = ChatColor.translateAlternateColorCodes('&', lang);
+        Bukkit.broadcastMessage(message);
+    }
+
+    private void selectLuckyPlayer() {
+        Random random = new Random();
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        int randomNumber = random.nextInt(players.size());
+        Player player = players.get(randomNumber);
+        saveSelectionData(player);
+        broadcastSelectedMessage(player);
+    }
+
     @Override
     public void run() {
-
         LocalTime now = LocalTime.now();
-        if (now.getHour() == 0) {
-            config.set("selection.hasCompletedToday", false);
-            config.set("lucky-player", null);
-            GodOfWealth.getInstance().saveConfig();
+        boolean hasCompletedToday = config.getBoolean("selection.hasCompletedToday");
+        boolean tomorrowComes = now.getHour() == 0;
+        boolean isDuringRewardTime = now.getHour() > config.getInt("reward-after") && now.getHour() < config.getInt("selection.time");
+        boolean isSelectionTime = now.getHour() == config.getInt(("selection.time"));
+        boolean luckyPlayerIsOnline = Bukkit.getPlayer(UUID.fromString(config.getString("lucky-player"))).isOnline();
+
+        if (tomorrowComes) {
+            ConfigUtil.clearData();
             return;
         }
-        if (config.getBoolean("selection.hasCompletedToday")) {
+        if (hasCompletedToday) {
             return;
         }
-        if (now.getHour() > config.getInt("reward-after") && now.getHour() < config.getInt("selection.time")) {
-            if (Bukkit.getPlayer(UUID.fromString(config.getString("lucky-player"))).isOnline()) {
+        if (isDuringRewardTime) {
+            if (luckyPlayerIsOnline) {
                 RewardUtil.rewardAllPlayers();
-                config.set("lucky-player", null);
-                config.set("lucky-player-real-name", null);
-                GodOfWealth.getInstance().saveConfig();
+                ConfigUtil.finishReward();
                 return;
             }
         }
-        if (now.getHour() == config.getInt(("selection.time"))) {
-            Random random = new Random();
-            List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
-            int randomNumber = random.nextInt(players.size());
-            while (players.get(randomNumber).isOp()) {
-                randomNumber = random.nextInt(players.size());
-            }
-            config.set("selection.hasCompletedToday", true);
-            config.set("lucky-player", players.get(randomNumber).getUniqueId());
-            config.set("lucky-player-real-name", players.get(randomNumber).getName());
-            GodOfWealth.getInstance().saveConfig();
-            String messageToBroadcast = ChatColor.translateAlternateColorCodes('&', config.getString("lang.broadcast-selected-player").replaceAll("%player%", players.get(randomNumber).getName()));
-            Bukkit.broadcastMessage(messageToBroadcast);
+        if (isSelectionTime) {
+            selectLuckyPlayer();
         }
 
     }
