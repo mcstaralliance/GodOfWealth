@@ -1,15 +1,16 @@
-lucky-player: undefined
-lucky-player-real-name:
+lucky-player: 00000000-0000-0000-0000-00000
+lucky-player-real-name: undefined
 selection:
   time: 13
   # time is hour
   hasCompletedToday: false
 reward-after: 12
 # reward time must be earlier than selection time.
-# 奖励时间和选择时间之间的一段时间是昨日财神爷上线奖励全服的时间。
+# 奖励时间和选择时间之间的一段时间是昨日财神爷上线奖励全服的时间
 reward-type: money
 # available types: money, points
 reward-amount: 1000
 lang:
   broadcast-selected-player: '%player% 已被选为财神爷'
   menu-name: "GodOfWealth Panel"
+web-port: 12345

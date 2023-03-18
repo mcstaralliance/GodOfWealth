@@ -2,6 +2,7 @@ package com.mcstaralliance.godofwealth.command;
 
 import com.mcstaralliance.godofwealth.GodOfWealth;
 import com.mcstaralliance.godofwealth.gui.Panel;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,13 +13,14 @@ import org.bukkit.entity.Player;
 public class MyCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length > 2) {
+        if (args.length == 0 || args.length > 2){
             sender.sendMessage(ChatColor.RED + "参数不合法");
-            return false;
+            return true;
         }
         switch (args[0]) {
             case "reload":
                 GodOfWealth.getInstance().reloadConfig();
+                sender.sendMessage(ChatColor.GREEN + "插件已重载");
                 return true;
             case "set-player":
                 FileConfiguration config = GodOfWealth.getInstance().getConfig();
