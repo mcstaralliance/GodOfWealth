@@ -14,10 +14,10 @@ public class RewardUtil {
     public static void rewardPlayer(Player player, String type) {
         switch (type) {
             case "money":
-                GodOfWealth.getEconomy().depositPlayer(player, config.getInt("reward-amount"));
+                GodOfWealth.getEconomy().depositPlayer(player, config.getInt("reward.amount"));
                 break;
             case "points":
-                GodOfWealth.getPlayerPoints().give(player.getUniqueId(), config.getInt("reward-amount"));
+                GodOfWealth.getPlayerPoints().give(player.getUniqueId(), config.getInt("reward.amount"));
                 break;
             default:
                 break;
@@ -27,7 +27,7 @@ public class RewardUtil {
     public static void rewardAllPlayers() {
         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
         for (Player playerToReward : players) {
-            rewardPlayer(playerToReward, config.getString("reward-type"));
+            rewardPlayer(playerToReward, config.getString("reward.type"));
         }
     }
 }

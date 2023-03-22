@@ -18,14 +18,6 @@ import java.util.UUID;
 public class CheckRunnable extends BukkitRunnable {
     private final FileConfiguration config = GodOfWealth.getInstance().getConfig();
 
-
-    public void saveSelectionData(Player player) {
-        config.set("selection.hasCompletedToday", true);
-        config.set("lucky-player", player.getUniqueId());
-        config.set("lucky-player-real-name", player.getName());
-        GodOfWealth.getInstance().saveConfig();
-    }
-
     private void broadcastSelectedMessage(Player player) {
         String lang = config.getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
         String message = ChatColor.translateAlternateColorCodes('&', lang);
@@ -33,11 +25,11 @@ public class CheckRunnable extends BukkitRunnable {
     }
 
     private void selectLuckyPlayer() {
-        Random random = new Random();
         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        Random random = new Random();
         int randomNumber = random.nextInt(players.size());
         Player player = players.get(randomNumber);
-        saveSelectionData(player);
+        ConfigUtil.saveData(player);
         broadcastSelectedMessage(player);
     }
 

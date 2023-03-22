@@ -2,7 +2,7 @@ package com.mcstaralliance.godofwealth.command;
 
 import com.mcstaralliance.godofwealth.GodOfWealth;
 import com.mcstaralliance.godofwealth.gui.Panel;
-import net.milkbowl.vault.chat.Chat;
+import com.mcstaralliance.godofwealth.util.StringConst;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,18 +11,19 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class MyCommand implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0 || args.length > 2){
-            sender.sendMessage(ChatColor.RED + "参数不合法");
+            sender.sendMessage(ChatColor.RED + StringConst.INVALID_ARGUMENTS);
             return true;
         }
         switch (args[0]) {
             case "reload":
                 GodOfWealth.getInstance().reloadConfig();
-                sender.sendMessage(ChatColor.GREEN + "插件已重载");
+                sender.sendMessage(ChatColor.GREEN + StringConst.PLUGIN_RELOADED);
                 return true;
-            case "set-player":
+            case "set":
                 FileConfiguration config = GodOfWealth.getInstance().getConfig();
                 config.set("lucky-player", args[1]);
                 GodOfWealth.getInstance().saveConfig();
@@ -33,11 +34,11 @@ public class MyCommand implements CommandExecutor {
                     Player player = (Player) sender;
                     player.openInventory(panel.getInventory());
                 } else {
-                    sender.sendMessage(ChatColor.RED + "Only players can execute this command.");
+                    sender.sendMessage(ChatColor.RED + StringConst.PLAYER_ONLY_COMMAND);
                 }
                 return true;
             default:
-                sender.sendMessage(ChatColor.RED + "你输入的指令不存在");
+                sender.sendMessage(ChatColor.RED + StringConst.COMMAND_NOT_EXIST);
                 break;
         }
         return false;

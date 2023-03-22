@@ -8,7 +8,7 @@ commands:
 permissions:
   gow.panel:
     default: true
-  gow.set-player:
+  gow.set:
     default: op
   gow.reload:
     default: op
