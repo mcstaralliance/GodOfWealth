@@ -26,8 +26,9 @@ public class RewardUtil {
 
     public static void rewardAllPlayers() {
         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
-        for (Player playerToReward : players) {
-            rewardPlayer(playerToReward, config.getString("reward.type"));
+        for (Player player : players) {
+            rewardPlayer(player, config.getString("reward.type"));
+            player.sendMessage(config.getString("lang.reward-message"));
         }
     }
 }

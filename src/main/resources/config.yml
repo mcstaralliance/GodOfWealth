@@ -14,6 +14,11 @@ reward:
 lang:
   broadcast-selected-player: '%player% 已被选为财神爷'
   menu-title: "GodOfWealth Panel"
+  border-glass-name: "分界线"
+  info-lore:
+    - '&a今日财神爷: %gow_player%'
+    - '&a快去提醒他上线'
+  reward-message: "&a财神爷显灵，你领取到了奖励。"
 web:
   enable: false
   port: 12345

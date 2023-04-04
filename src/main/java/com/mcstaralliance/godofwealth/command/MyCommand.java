@@ -14,7 +14,7 @@ public class MyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0 || args.length > 2){
+        if (args.length == 0 || args.length > 2) {
             sender.sendMessage(ChatColor.RED + StringConst.INVALID_ARGUMENTS);
             return true;
         }
@@ -27,6 +27,7 @@ public class MyCommand implements CommandExecutor {
                 FileConfiguration config = GodOfWealth.getInstance().getConfig();
                 config.set("lucky-player", args[1]);
                 GodOfWealth.getInstance().saveConfig();
+                sender.sendMessage(ChatColor.GREEN + StringConst.LUCKY_PLAYER_SET);
                 return true;
             case "panel":
                 if (sender instanceof Player) {

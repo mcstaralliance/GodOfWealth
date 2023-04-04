@@ -38,9 +38,9 @@ public class CheckRunnable extends BukkitRunnable {
         LocalTime now = LocalTime.now();
         boolean hasCompletedToday = config.getBoolean("selection.hasCompletedToday");
         boolean tomorrowComes = now.getHour() == 0;
-        boolean isDuringRewardTime = now.getHour() > config.getInt("reward-after") && now.getHour() < config.getInt("selection.time");
+        boolean isDuringRewardTime = now.getHour() > config.getInt("reward-after")
+                && now.getHour() < config.getInt("selection.time");
         boolean isSelectionTime = now.getHour() == config.getInt(("selection.time"));
-        boolean luckyPlayerIsOnline;
         Player player = Bukkit.getPlayer(UUID.fromString(config.getString("lucky-player")));
 
         if (tomorrowComes) {
@@ -54,9 +54,8 @@ public class CheckRunnable extends BukkitRunnable {
             if (player == null) {
                 return;
             }
-            luckyPlayerIsOnline = player.isOnline();
 
-            if (luckyPlayerIsOnline) {
+            if (player.isOnline()) {
                 RewardUtil.rewardAllPlayers();
                 ConfigUtil.finishReward();
                 return;

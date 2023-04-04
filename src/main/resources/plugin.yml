@@ -1,8 +1,10 @@
 name: GodOfWealth
 main: com.mcstaralliance.godofwealth.GodOfWealth
 version: '${project.version}'
-depend: [Vault]
-softdepend: [PlayerPoints]
+depend:
+  - Vault
+  - PlaceHolderAPI
+softdepend: [ PlayerPoints ]
 commands:
   gow:
 permissions:

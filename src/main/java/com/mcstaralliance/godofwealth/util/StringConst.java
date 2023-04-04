@@ -9,4 +9,5 @@ public class StringConst {
     public static final String TIME_IS_ZERO = "请不要将时间设置为零点，插件自动关闭。";
     public static final String BIND_PORT_FAIL = "Unable to bind web server to port.";
     public static final String STOP_WEB_FAIL = "Unable to stop web server.";
+    public static final String LUCKY_PLAYER_SET = "已将指定玩家设定为财神爷。";
 }
