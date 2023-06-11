@@ -10,7 +10,7 @@ public class InventoryClickListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
 
-        if (event.getInventory() instanceof Panel) {
+        if (event.getInventory().getHolder() instanceof Panel) {
             event.setCancelled(true);
         }
     }

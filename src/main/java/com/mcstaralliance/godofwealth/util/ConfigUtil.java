@@ -30,6 +30,7 @@ public class ConfigUtil {
 
     public static void saveData(Player player) {
         config.set("selection.hasCompletedToday", true);
+        // mark if selection of today has completed.
         config.set("lucky-player", player.getUniqueId());
         config.set("lucky-player-real-name", player.getName());
         GodOfWealth.getInstance().saveConfig();

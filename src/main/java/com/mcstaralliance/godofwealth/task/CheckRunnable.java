@@ -5,6 +5,7 @@ import com.mcstaralliance.godofwealth.util.ConfigUtil;
 import com.mcstaralliance.godofwealth.util.RewardUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 public class CheckRunnable extends BukkitRunnable {
     private final FileConfiguration config = GodOfWealth.getInstance().getConfig();
+    private boolean hasClearedData = false;
 
     private void broadcastSelectedMessage(Player player) {
         String lang = config.getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
@@ -35,19 +37,25 @@ public class CheckRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
+        // in charge of selecting lucky player & rewarding.
         LocalTime now = LocalTime.now();
         boolean hasCompletedToday = config.getBoolean("selection.hasCompletedToday");
         boolean tomorrowComes = now.getHour() == 0;
         boolean isDuringRewardTime = now.getHour() > config.getInt("reward-after")
                 && now.getHour() < config.getInt("selection.time");
         boolean isSelectionTime = now.getHour() == config.getInt(("selection.time"));
-        Player player = Bukkit.getPlayer(UUID.fromString(config.getString("lucky-player")));
+        OfflinePlayer player = Bukkit.getPlayer(UUID.fromString(config.getString("lucky-player")));
 
         if (tomorrowComes) {
+            if (hasClearedData) {
+                return;
+            }
             ConfigUtil.clearData();
+            hasClearedData = true;
             return;
         }
         if (hasCompletedToday) {
+            // 阻止新的财神爷产生
             return;
         }
         if (isDuringRewardTime) {
@@ -63,6 +71,7 @@ public class CheckRunnable extends BukkitRunnable {
         }
         if (isSelectionTime) {
             selectLuckyPlayer();
+            hasClearedData = false;
         }
 
     }
