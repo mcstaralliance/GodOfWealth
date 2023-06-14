@@ -8,7 +8,8 @@ TODO:
 
 指令:
 
-- `/gow reload` 重载
-- `/gow set-player <player>` 设定指定玩家为财神爷
+- `/gow reload` 重载配置文件
+- `/gow set <player>` 设定指定玩家为财神爷
+- `/gow panel` 打开数据展示面板
 
 支持 Vault 金币和 PlayerPoints 点券。

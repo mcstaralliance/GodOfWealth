@@ -3,7 +3,7 @@ main: com.mcstaralliance.godofwealth.GodOfWealth
 version: '${project.version}'
 depend:
   - Vault
-  - PlaceHolderAPI
+  - PlaceholderAPI
 softdepend: [ PlayerPoints ]
 commands:
   gow:
