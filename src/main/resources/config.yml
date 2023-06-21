@@ -14,11 +14,17 @@ reward:
 lang:
   broadcast-selected-player: '%player% 已被选为财神爷'
   menu-title: "GodOfWealth Panel"
-  border-glass-name: "分界线"
-  info-lore:
+  border-glass-name: "&f分界线"
+  info-lore-before-next-selection:
+    - '&a明日财神爷: %gow_player%'
+    - '&a财神爷在明日 12 点后在线全服可领 1000 硬币。'
+    - '&a快去提醒他上线'
+  info-lore-after-last-selection:
     - '&a今日财神爷: %gow_player%'
+    - '&a财神爷在今日 12 点后在线全服可领 1000 硬币。'
     - '&a快去提醒他上线'
   reward-message: "&a财神爷显灵，你领取到了奖励。"
+  head-name: "&a财神爷信息看板"
 web:
   enable: false
   port: 12345

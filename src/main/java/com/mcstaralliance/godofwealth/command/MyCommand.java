@@ -3,12 +3,15 @@ package com.mcstaralliance.godofwealth.command;
 import com.mcstaralliance.godofwealth.GodOfWealth;
 import com.mcstaralliance.godofwealth.gui.Panel;
 import com.mcstaralliance.godofwealth.util.StringConst;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class MyCommand implements CommandExecutor {
 
@@ -24,10 +27,11 @@ public class MyCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.GREEN + StringConst.PLUGIN_RELOADED);
                 return true;
             case "set":
-                FileConfiguration config = GodOfWealth.getInstance().getConfig();
-                config.set("lucky-player", args[1]);
+                GodOfWealth.getInstance().getConfig().set("lucky-player-real-name", args[1]);
+                GodOfWealth.getInstance().getConfig().set("lucky-player", getPlayerUUID(args[1]).toString());
                 GodOfWealth.getInstance().saveConfig();
-                sender.sendMessage(ChatColor.GREEN + StringConst.LUCKY_PLAYER_SET);
+                sender.sendMessage(getPlayerUUID(args[1]).toString() + "has been set to lucky-player");
+                sender.sendMessage(ChatColor.GREEN + "已将 " + args[1] + " 设定为财神爷。");
                 return true;
             case "panel":
                 if (sender instanceof Player) {
@@ -38,6 +42,12 @@ public class MyCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + StringConst.PLAYER_ONLY_COMMAND);
                 }
                 return true;
+            case "uuid":
+                if (sender instanceof Player) {
+                    sender.sendMessage("now: " + getPlayerUUID(sender.getName()).toString());
+                    sender.sendMessage("config: " + GodOfWealth.getInstance().getConfig().getString("lucky-player"));
+                    return true;
+                }
             default:
                 sender.sendMessage(ChatColor.RED + StringConst.COMMAND_NOT_EXIST);
                 break;
@@ -45,4 +55,12 @@ public class MyCommand implements CommandExecutor {
         return false;
     }
 
+    public UUID getPlayerUUID(String playerName) {
+        for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+            if (offlinePlayer.getName().equalsIgnoreCase(playerName)) {
+                return offlinePlayer.getUniqueId();
+            }
+        }
+        return null;
+    }
 }

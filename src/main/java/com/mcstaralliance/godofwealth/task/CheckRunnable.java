@@ -6,7 +6,6 @@ import com.mcstaralliance.godofwealth.util.RewardUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -17,11 +16,10 @@ import java.util.Random;
 import java.util.UUID;
 
 public class CheckRunnable extends BukkitRunnable {
-    private final FileConfiguration config = GodOfWealth.getInstance().getConfig();
     private boolean hasClearedData = false;
 
     private void broadcastSelectedMessage(Player player) {
-        String lang = config.getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
+        String lang = GodOfWealth.getInstance().getConfig().getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
         String message = ChatColor.translateAlternateColorCodes('&', lang);
         Bukkit.broadcastMessage(message);
     }
@@ -39,12 +37,12 @@ public class CheckRunnable extends BukkitRunnable {
     public void run() {
         // in charge of selecting lucky player & rewarding.
         LocalTime now = LocalTime.now();
-        boolean hasCompletedToday = config.getBoolean("selection.hasCompletedToday");
+        boolean hasCompletedToday = GodOfWealth.getInstance().getConfig().getBoolean("selection.hasCompletedToday");
         boolean tomorrowComes = now.getHour() == 0;
-        boolean isDuringRewardTime = now.getHour() > config.getInt("reward-after")
-                && now.getHour() < config.getInt("selection.time");
-        boolean isSelectionTime = now.getHour() == config.getInt(("selection.time"));
-        OfflinePlayer player = Bukkit.getPlayer(UUID.fromString(config.getString("lucky-player")));
+        boolean isDuringRewardTime = now.getHour() > GodOfWealth.getInstance().getConfig().getInt("reward.after")
+                && now.getHour() < GodOfWealth.getInstance().getConfig().getInt("selection.time");
+        boolean isSelectionTime = now.getHour() == GodOfWealth.getInstance().getConfig().getInt(("selection.time"));
+        OfflinePlayer player = Bukkit.getPlayer(UUID.fromString(GodOfWealth.getInstance().getConfig().getString("lucky-player")));
 
         if (tomorrowComes) {
             if (hasClearedData) {
