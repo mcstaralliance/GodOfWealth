@@ -30,7 +30,6 @@ public class MyCommand implements CommandExecutor {
                 GodOfWealth.getInstance().getConfig().set("lucky-player-real-name", args[1]);
                 GodOfWealth.getInstance().getConfig().set("lucky-player", getPlayerUUID(args[1]).toString());
                 GodOfWealth.getInstance().saveConfig();
-                sender.sendMessage(getPlayerUUID(args[1]).toString() + "has been set to lucky-player");
                 sender.sendMessage(ChatColor.GREEN + "已将 " + args[1] + " 设定为财神爷。");
                 return true;
             case "panel":
@@ -42,12 +41,6 @@ public class MyCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + StringConst.PLAYER_ONLY_COMMAND);
                 }
                 return true;
-            case "uuid":
-                if (sender instanceof Player) {
-                    sender.sendMessage("now: " + getPlayerUUID(sender.getName()).toString());
-                    sender.sendMessage("config: " + GodOfWealth.getInstance().getConfig().getString("lucky-player"));
-                    return true;
-                }
             default:
                 sender.sendMessage(ChatColor.RED + StringConst.COMMAND_NOT_EXIST);
                 break;
