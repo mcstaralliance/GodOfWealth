@@ -29,6 +29,7 @@ public class MyCommand implements CommandExecutor {
             case "set":
                 GodOfWealth.getInstance().getConfig().set("lucky-player-real-name", args[1]);
                 GodOfWealth.getInstance().getConfig().set("lucky-player", getPlayerUUID(args[1]).toString());
+                GodOfWealth.getInstance().getConfig().set("selection.hasCompletedToday", true);
                 GodOfWealth.getInstance().saveConfig();
                 sender.sendMessage(ChatColor.GREEN + "已将 " + args[1] + " 设定为财神爷。");
                 return true;
