@@ -1,8 +1,12 @@
 package com.mcstaralliance.godofwealth.gui;
 
 import com.mcstaralliance.godofwealth.GodOfWealth;
+import com.mcstaralliance.godofwealth.util.ConfigUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -18,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class Panel implements InventoryHolder {
 
-    private final String title = color(GodOfWealth.getInstance().getConfig().getString("lang.menu-title"));
+    private final String title = ConfigUtil.color(GodOfWealth.getInstance().getConfig().getString("lang.menu-title"));
     private final Inventory inv = Bukkit.createInventory(this, 3 * 9, title);
 
     public Panel() {
@@ -28,7 +32,7 @@ public class Panel implements InventoryHolder {
 
     public void setBorder() {
         String borderGlassPlainName = GodOfWealth.getInstance().getConfig().getString("lang.border-glass-name");
-        String borderGlassName = color(borderGlassPlainName);
+        String borderGlassName = ConfigUtil.color(borderGlassPlainName);
         ItemStack borderGlass = createOrangeStainedPane(Material.STAINED_GLASS_PANE, borderGlassName);
         arrangeBorder(borderGlass);
     }
@@ -46,7 +50,7 @@ public class Panel implements InventoryHolder {
     }
 
     public void setInfoButton() {
-        String headName = color(GodOfWealth.getInstance().getConfig().getString("lang.head-name"));
+        String headName = ConfigUtil.color(GodOfWealth.getInstance().getConfig().getString("lang.head-name"));
         UUID uuid = UUID.fromString(GodOfWealth.getInstance().getConfig().getString("lucky-player"));
         ItemStack head = createHead(Material.SKULL_ITEM, headName, uuid);
         inv.setItem(13, head);
@@ -58,21 +62,21 @@ public class Panel implements InventoryHolder {
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
         Player player = Bukkit.getPlayer(uuid);
         List<String> loreBeforeNextSelection = GodOfWealth.getInstance().getConfig().getStringList("lang.info-lore-before-next-selection").stream()
-                .map(this::color)
+                .map(ConfigUtil::color)
                 .map(s -> s.replaceAll("%gow_player%", GodOfWealth.getInstance().getConfig().getString("lucky-player-real-name")))
                 .map(s -> PlaceholderAPI.setPlaceholders(player, s))
                 .collect(Collectors.toList());
         List<String> loreAfterLastSelection = GodOfWealth.getInstance().getConfig().getStringList("lang.info-lore-after-last-selection").stream()
-                .map(this::color)
+                .map(ConfigUtil::color)
                 .map(s -> s.replaceAll("%gow_player%", GodOfWealth.getInstance().getConfig().getString("lucky-player-real-name")))
                 .map(s -> PlaceholderAPI.setPlaceholders(player, s))
                 .collect(Collectors.toList());
         int selectionHour = GodOfWealth.getInstance().getConfig().getInt("selection.time");
         LocalTime now = LocalTime.now();
         if (now.getHour() < selectionHour) {
-            skullMeta.setLore(loreBeforeNextSelection);
-        } else {
             skullMeta.setLore(loreAfterLastSelection);
+        } else {
+            skullMeta.setLore(loreBeforeNextSelection);
         }
         skullMeta.setDisplayName(name);
         skull.setItemMeta(skullMeta);
@@ -91,9 +95,6 @@ public class Panel implements InventoryHolder {
         return item;
     }
 
-    public String color(String str) {
-        return ChatColor.translateAlternateColorCodes('&', str);
-    }
 
     public Inventory getInventory() {
         return inv;

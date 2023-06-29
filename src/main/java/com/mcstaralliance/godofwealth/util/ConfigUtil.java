@@ -1,6 +1,7 @@
 package com.mcstaralliance.godofwealth.util;
 
 import com.mcstaralliance.godofwealth.GodOfWealth;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class ConfigUtil {
@@ -21,8 +22,8 @@ public class ConfigUtil {
 
     public static void clearData() {
         GodOfWealth.getInstance().getConfig().set("selection.hasCompletedToday", false);
-        GodOfWealth.getInstance().getConfig().set("lucky-player", null);
-        GodOfWealth.getInstance().getConfig().set("lucky-player-real-name", null);
+        GodOfWealth.getInstance().getConfig().set("lucky-player", "");
+        GodOfWealth.getInstance().getConfig().set("lucky-player-real-name", "");
         GodOfWealth.getInstance().saveConfig();
     }
 
@@ -34,10 +35,8 @@ public class ConfigUtil {
         GodOfWealth.getInstance().saveConfig();
     }
 
-    public static void finishReward() {
-        GodOfWealth.getInstance().getConfig().set("lucky-player", null);
-        GodOfWealth.getInstance().getConfig().set("lucky-player-real-name", null);
-        GodOfWealth.getInstance().saveConfig();
+    public static String color(String str) {
+        return ChatColor.translateAlternateColorCodes('&', str);
     }
 }
 

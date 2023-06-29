@@ -2,7 +2,6 @@ package com.mcstaralliance.godofwealth.util;
 
 import com.mcstaralliance.godofwealth.GodOfWealth;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -25,14 +24,13 @@ public class RewardUtil {
 
     public static void rewardAllPlayers() {
         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        if (players.isEmpty()) {
+            return;
+        }
         for (Player player : players) {
             rewardPlayer(player, GodOfWealth.getInstance().getConfig().getString("reward.type"));
-            player.sendMessage(color(GodOfWealth.getInstance().getConfig().getString("lang.reward-message")));
+            player.sendMessage(ConfigUtil.color(GodOfWealth.getInstance().getConfig().getString("lang.reward-message")));
         }
-    }
-
-    public static String color(String str) {
-        return ChatColor.translateAlternateColorCodes('&', str);
     }
 
 }

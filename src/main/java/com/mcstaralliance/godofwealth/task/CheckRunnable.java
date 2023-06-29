@@ -4,8 +4,6 @@ import com.mcstaralliance.godofwealth.GodOfWealth;
 import com.mcstaralliance.godofwealth.util.ConfigUtil;
 import com.mcstaralliance.godofwealth.util.RewardUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -20,12 +18,15 @@ public class CheckRunnable extends BukkitRunnable {
 
     private void broadcastSelectedMessage(Player player) {
         String lang = GodOfWealth.getInstance().getConfig().getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
-        String message = ChatColor.translateAlternateColorCodes('&', lang);
+        String message = ConfigUtil.color(lang);
         Bukkit.broadcastMessage(message);
     }
 
     private void selectLuckyPlayer() {
         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        if (players.isEmpty()) {
+            return;
+        }
         Random random = new Random();
         int randomNumber = random.nextInt(players.size());
         Player player = players.get(randomNumber);
@@ -42,7 +43,7 @@ public class CheckRunnable extends BukkitRunnable {
         boolean isDuringRewardTime = now.getHour() > GodOfWealth.getInstance().getConfig().getInt("reward.after")
                 && now.getHour() < GodOfWealth.getInstance().getConfig().getInt("selection.time");
         boolean isSelectionTime = now.getHour() == GodOfWealth.getInstance().getConfig().getInt(("selection.time"));
-        OfflinePlayer player = Bukkit.getPlayer(UUID.fromString(GodOfWealth.getInstance().getConfig().getString("lucky-player")));
+        Player player = Bukkit.getPlayer(UUID.fromString(GodOfWealth.getInstance().getConfig().getString("lucky-player")));
 
         if (tomorrowComes) {
             if (hasClearedData) {
@@ -59,17 +60,14 @@ public class CheckRunnable extends BukkitRunnable {
         if (isDuringRewardTime) {
             if (player == null) {
                 return;
-            }
-
-            if (player.isOnline()) {
+            } else if (player.isOnline()) {
                 RewardUtil.rewardAllPlayers();
-                ConfigUtil.finishReward();
-                return;
+                ConfigUtil.clearData();
             }
         }
         if (isSelectionTime) {
-            selectLuckyPlayer();
             hasClearedData = false;
+            selectLuckyPlayer();
         }
 
     }
