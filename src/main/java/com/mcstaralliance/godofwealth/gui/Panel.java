@@ -56,6 +56,14 @@ public class Panel implements InventoryHolder {
         inv.setItem(13, head);
     }
 
+    public String getLuckyPlayer() {
+        if (!GodOfWealth.getInstance().getConfig().getString("lucky-player-real-name").equals("")) {
+            return GodOfWealth.getInstance().getConfig().getString("lucky-player-real-name");
+        } else {
+            return "无";
+        }
+    }
+
     public ItemStack createHead(Material material, String name, UUID uuid) {
         ItemStack skull = new ItemStack(material, 1, (short) SkullType.PLAYER.ordinal());
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
@@ -63,12 +71,12 @@ public class Panel implements InventoryHolder {
         Player player = Bukkit.getPlayer(uuid);
         List<String> loreBeforeNextSelection = GodOfWealth.getInstance().getConfig().getStringList("lang.info-lore-before-next-selection").stream()
                 .map(ConfigUtil::color)
-                .map(s -> s.replaceAll("%gow_player%", GodOfWealth.getInstance().getConfig().getString("lucky-player-real-name")))
+                .map(s -> s.replaceAll("%gow_player%", getLuckyPlayer()))
                 .map(s -> PlaceholderAPI.setPlaceholders(player, s))
                 .collect(Collectors.toList());
         List<String> loreAfterLastSelection = GodOfWealth.getInstance().getConfig().getStringList("lang.info-lore-after-last-selection").stream()
                 .map(ConfigUtil::color)
-                .map(s -> s.replaceAll("%gow_player%", GodOfWealth.getInstance().getConfig().getString("lucky-player-real-name")))
+                .map(s -> s.replaceAll("%gow_player%", getLuckyPlayer()))
                 .map(s -> PlaceholderAPI.setPlaceholders(player, s))
                 .collect(Collectors.toList());
         int selectionHour = GodOfWealth.getInstance().getConfig().getInt("selection.time");
