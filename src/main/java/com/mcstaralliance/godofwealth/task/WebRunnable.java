@@ -7,17 +7,18 @@ import org.eclipse.jetty.http.HttpGenerator;
 import org.eclipse.jetty.server.Server;
 
 public class WebRunnable extends BukkitRunnable {
+    private static final GodOfWealth plugin = GodOfWealth.getInstance();
     @Override
     public void run() {
         Server server = GodOfWealth.getJettyServer();
         try {
             server.start();
-            HttpGenerator.setJettyVersion(String.format("%s/%s", GodOfWealth.getInstance().getDescription().getName(),
-                    GodOfWealth.getInstance().getDescription().getVersion()));
+            HttpGenerator.setJettyVersion(String.format("%s/%s", plugin.getDescription().getName(),
+                    plugin.getDescription().getVersion()));
         } catch (Exception e) {
-            GodOfWealth.getInstance().getLogger().severe(StringConst.BIND_PORT_FAIL);
+            plugin.getLogger().severe(StringConst.BIND_PORT_FAIL);
             e.printStackTrace();
-            GodOfWealth.getInstance().getServer().getPluginManager().disablePlugin(GodOfWealth.getInstance());
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
         }
     }
 }

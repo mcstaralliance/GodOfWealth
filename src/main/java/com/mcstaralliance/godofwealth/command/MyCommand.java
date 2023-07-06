@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class MyCommand implements CommandExecutor {
+    private static final GodOfWealth plugin = GodOfWealth.getInstance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -23,14 +24,14 @@ public class MyCommand implements CommandExecutor {
         }
         switch (args[0]) {
             case "reload":
-                GodOfWealth.getInstance().reloadConfig();
+                plugin.reloadConfig();
                 sender.sendMessage(ChatColor.GREEN + StringConst.PLUGIN_RELOADED);
                 return true;
             case "set":
-                GodOfWealth.getInstance().getConfig().set("lucky-player-real-name", args[1]);
-                GodOfWealth.getInstance().getConfig().set("lucky-player", getPlayerUUID(args[1]).toString());
-                GodOfWealth.getInstance().getConfig().set("selection.hasCompletedToday", true);
-                GodOfWealth.getInstance().saveConfig();
+                plugin.getConfig().set("lucky-player-real-name", args[1]);
+                plugin.getConfig().set("lucky-player", getPlayerUUID(args[1]).toString());
+                plugin.getConfig().set("selection.hasCompletedToday", true);
+                plugin.saveConfig();
                 sender.sendMessage(ChatColor.GREEN + "已将 " + args[1] + " 设定为财神爷。");
                 return true;
             case "panel":

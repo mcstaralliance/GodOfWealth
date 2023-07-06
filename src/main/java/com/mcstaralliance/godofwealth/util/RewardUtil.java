@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RewardUtil {
-
+    private static final GodOfWealth plugin = GodOfWealth.getInstance();
     public static void rewardPlayer(Player player, String type) {
         switch (type) {
             case "money":
-                GodOfWealth.getEconomy().depositPlayer(player, GodOfWealth.getInstance().getConfig().getInt("reward.amount"));
+                GodOfWealth.getEconomy().depositPlayer(player, plugin.getConfig().getInt("reward.amount"));
                 break;
             case "points":
-                GodOfWealth.getPlayerPoints().give(player.getUniqueId(), GodOfWealth.getInstance().getConfig().getInt("reward.amount"));
+                GodOfWealth.getPlayerPoints().give(player.getUniqueId(), plugin.getConfig().getInt("reward.amount"));
                 break;
             default:
                 break;
@@ -28,8 +28,8 @@ public class RewardUtil {
             return;
         }
         for (Player player : players) {
-            rewardPlayer(player, GodOfWealth.getInstance().getConfig().getString("reward.type"));
-            player.sendMessage(ConfigUtil.color(GodOfWealth.getInstance().getConfig().getString("lang.reward-message")));
+            rewardPlayer(player, plugin.getConfig().getString("reward.type"));
+            player.sendMessage(ConfigUtil.color(plugin.getConfig().getString("lang.reward-message")));
         }
     }
 

@@ -14,10 +14,11 @@ import java.util.Random;
 import java.util.UUID;
 
 public class CheckRunnable extends BukkitRunnable {
+    private static final GodOfWealth plugin = GodOfWealth.getInstance();
     private boolean hasClearedData = false;
 
     private void broadcastSelectedMessage(Player player) {
-        String lang = GodOfWealth.getInstance().getConfig().getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
+        String lang = plugin.getConfig().getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
         String message = ConfigUtil.color(lang);
         Bukkit.broadcastMessage(message);
     }
@@ -38,12 +39,12 @@ public class CheckRunnable extends BukkitRunnable {
     public void run() {
         // in charge of selecting lucky player & rewarding.
         LocalTime now = LocalTime.now();
-        boolean hasCompletedToday = GodOfWealth.getInstance().getConfig().getBoolean("selection.hasCompletedToday");
+        boolean hasCompletedToday = plugin.getConfig().getBoolean("selection.hasCompletedToday");
         boolean tomorrowComes = now.getHour() == 0;
-        boolean isDuringRewardTime = now.getHour() > GodOfWealth.getInstance().getConfig().getInt("reward.after")
-                && now.getHour() < GodOfWealth.getInstance().getConfig().getInt("selection.time");
-        boolean isSelectionTime = now.getHour() == GodOfWealth.getInstance().getConfig().getInt(("selection.time"));
-        Player player = Bukkit.getPlayer(UUID.fromString(GodOfWealth.getInstance().getConfig().getString("lucky-player")));
+        boolean isDuringRewardTime = now.getHour() > plugin.getConfig().getInt("reward.after")
+                && now.getHour() < plugin.getConfig().getInt("selection.time");
+        boolean isSelectionTime = now.getHour() == plugin.getConfig().getInt(("selection.time"));
+        Player player = Bukkit.getPlayer(UUID.fromString(plugin.getConfig().getString("lucky-player")));
 
         if (tomorrowComes) {
             if (hasClearedData) {
