@@ -50,7 +50,7 @@ public class CheckRunnable extends BukkitRunnable {
             if (hasClearedData) {
                 return;
             }
-            ConfigUtil.clearData();
+            ConfigUtil.clearSelectionStatus();
             hasClearedData = true;
             return;
         }
