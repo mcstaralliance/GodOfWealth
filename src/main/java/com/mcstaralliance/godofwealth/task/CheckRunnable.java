@@ -19,8 +19,7 @@ public class CheckRunnable extends BukkitRunnable {
 
     private void broadcastSelectedMessage(Player player) {
         String lang = plugin.getConfig().getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
-        String message = ConfigUtil.color(lang);
-        Bukkit.broadcastMessage(message);
+        Bukkit.broadcastMessage(ConfigUtil.color(lang));
     }
 
     private void selectLuckyPlayer() {
@@ -65,11 +64,10 @@ public class CheckRunnable extends BukkitRunnable {
                 RewardUtil.rewardAllPlayers();
                 ConfigUtil.clearData();
             }
+            if (isSelectionTime) {
+                hasClearedData = false;
+                selectLuckyPlayer();
+            }
         }
-        if (isSelectionTime) {
-            hasClearedData = false;
-            selectLuckyPlayer();
-        }
-
     }
 }

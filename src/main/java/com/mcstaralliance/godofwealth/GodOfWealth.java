@@ -96,7 +96,7 @@ public final class GodOfWealth extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), getInstance());
         Bukkit.getPluginManager().registerEvents(new InventoryDragListener(), getInstance());
         CheckRunnable checkRunnable = new CheckRunnable();
-        checkRunnable.runTaskTimer(getInstance(), 5L, 6000L);
+        checkRunnable.runTaskTimer(getInstance(), 5L, 1200L);
         FileConfiguration config = GodOfWealth.getInstance().getConfig();
         if (config.getBoolean("web.enable")) {
             setupJetty();

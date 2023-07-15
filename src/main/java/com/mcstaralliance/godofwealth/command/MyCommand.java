@@ -24,15 +24,23 @@ public class MyCommand implements CommandExecutor {
         }
         switch (args[0]) {
             case "reload":
-                plugin.reloadConfig();
-                sender.sendMessage(ChatColor.GREEN + StringConst.PLUGIN_RELOADED);
+                if (sender.hasPermission("godofwealth.reload")) {
+                    plugin.reloadConfig();
+                    sender.sendMessage(ChatColor.GREEN + StringConst.PLUGIN_RELOADED);
+                } else {
+                    sender.sendMessage(ChatColor.RED + StringConst.PERMISSION_DENIED);
+                }
                 return true;
             case "set":
-                plugin.getConfig().set("lucky-player-real-name", args[1]);
-                plugin.getConfig().set("lucky-player", getPlayerUUID(args[1]).toString());
-                plugin.getConfig().set("selection.hasCompletedToday", true);
-                plugin.saveConfig();
-                sender.sendMessage(ChatColor.GREEN + "已将 " + args[1] + " 设定为财神爷。");
+                if (sender.hasPermission("godofwealth.set")) {
+                    plugin.getConfig().set("lucky-player-real-name", args[1]);
+                    plugin.getConfig().set("lucky-player", getPlayerUUID(args[1]).toString());
+                    plugin.getConfig().set("selection.hasCompletedToday", true);
+                    plugin.saveConfig();
+                    sender.sendMessage(ChatColor.GREEN + "已将 " + args[1] + " 设定为财神爷。");
+                } else {
+                    sender.sendMessage(ChatColor.RED + StringConst.PERMISSION_DENIED);
+                }
                 return true;
             case "panel":
                 if (sender instanceof Player) {
