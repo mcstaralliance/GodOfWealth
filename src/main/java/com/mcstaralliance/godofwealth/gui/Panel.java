@@ -69,16 +69,8 @@ public class Panel implements InventoryHolder {
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
         Player player = Bukkit.getPlayer(uuid);
-        List<String> loreBeforeNextSelection = plugin.getConfig().getStringList("lang.info-lore-before-next-selection").stream()
-                .map(ConfigUtil::color)
-                .map(s -> s.replaceAll("%gow_player%", getLuckyPlayer()))
-                .map(s -> PlaceholderAPI.setPlaceholders(player, s))
-                .collect(Collectors.toList());
-        List<String> loreAfterLastSelection = plugin.getConfig().getStringList("lang.info-lore-after-last-selection").stream()
-                .map(ConfigUtil::color)
-                .map(s -> s.replaceAll("%gow_player%", getLuckyPlayer()))
-                .map(s -> PlaceholderAPI.setPlaceholders(player, s))
-                .collect(Collectors.toList());
+        List<String> loreBeforeNextSelection = getStringList("lang.info-lore-before-next-selection", player);
+        List<String> loreAfterLastSelection = getStringList("lang.info-lore-after-last-selection", player);
         int selectionHour = plugin.getConfig().getInt("selection.time");
         LocalTime now = LocalTime.now();
         if (now.getHour() < selectionHour) {
@@ -91,6 +83,14 @@ public class Panel implements InventoryHolder {
         return skull;
     }
 
+
+    public List<String> getStringList(String path, Player player) {
+        return plugin.getConfig().getStringList(path).stream()
+                .map(ConfigUtil::color)
+                .map(s -> s.replaceAll("%gow_player%", getLuckyPlayer()))
+                .map(s -> PlaceholderAPI.setPlaceholders(player, s))
+                .collect(Collectors.toList());
+    }
 
     public ItemStack createOrangeStainedPane(Material material, String name) {
         Dye dye = new Dye();
