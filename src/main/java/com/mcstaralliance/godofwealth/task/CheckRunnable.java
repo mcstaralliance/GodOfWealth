@@ -4,6 +4,7 @@ import com.mcstaralliance.godofwealth.GodOfWealth;
 import com.mcstaralliance.godofwealth.util.ConfigUtil;
 import com.mcstaralliance.godofwealth.util.RewardUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -17,7 +18,7 @@ public class CheckRunnable extends BukkitRunnable {
     private static final GodOfWealth plugin = GodOfWealth.getInstance();
     private boolean hasClearedData = false;
 
-    private void broadcastSelectedMessage(Player player) {
+    private void broadcastSelectedMessage(OfflinePlayer player) {
         String lang = plugin.getConfig().getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
         Bukkit.broadcastMessage(ConfigUtil.color(lang));
     }
@@ -31,19 +32,17 @@ public class CheckRunnable extends BukkitRunnable {
         int randomNumber = random.nextInt(players.size());
         Player player = players.get(randomNumber);
         ConfigUtil.saveData(player);
-        broadcastSelectedMessage(player);
     }
 
     @Override
     public void run() {
-        // in charge of selecting lucky player & rewarding.
         LocalTime now = LocalTime.now();
         boolean hasCompletedToday = plugin.getConfig().getBoolean("selection.hasCompletedToday");
         boolean tomorrowComes = now.getHour() == 0;
         boolean isDuringRewardTime = now.getHour() > plugin.getConfig().getInt("reward.after")
                 && now.getHour() < plugin.getConfig().getInt("selection.time");
         boolean isSelectionTime = now.getHour() == plugin.getConfig().getInt(("selection.time"));
-        Player player = Bukkit.getPlayer(UUID.fromString(plugin.getConfig().getString("lucky-player")));
+        OfflinePlayer player = Bukkit.getPlayer(UUID.fromString(plugin.getConfig().getString("lucky-player")));
 
         if (tomorrowComes) {
             if (hasClearedData) {
@@ -58,16 +57,19 @@ public class CheckRunnable extends BukkitRunnable {
             return;
         }
         if (isDuringRewardTime) {
-            if (player == null) {
-                return;
-            } else if (player.isOnline()) {
+            if (player.isOnline()) {
                 RewardUtil.rewardAllPlayers();
+                RewardUtil.broadcastReward();
                 ConfigUtil.clearData();
+            } else {
+                return;
             }
-            if (isSelectionTime) {
-                hasClearedData = false;
-                selectLuckyPlayer();
-            }
+        }
+        if (isSelectionTime) {
+            hasClearedData = false;
+            selectLuckyPlayer();
+            player = Bukkit.getPlayer(UUID.fromString(plugin.getConfig().getString("lucky-player")));
+            broadcastSelectedMessage(player);
         }
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 public class RewardUtil {
     private static final GodOfWealth plugin = GodOfWealth.getInstance();
+
     public static void rewardPlayer(Player player, String type) {
         switch (type) {
             case "money":
@@ -29,8 +30,11 @@ public class RewardUtil {
         }
         for (Player player : players) {
             rewardPlayer(player, plugin.getConfig().getString("reward.type"));
-            player.sendMessage(ConfigUtil.color(plugin.getConfig().getString("lang.reward-message")));
         }
+    }
+
+    public static void broadcastReward() {
+        Bukkit.broadcastMessage(ConfigUtil.color(plugin.getConfig().getString("lang.reward-message")));
     }
 
 }
