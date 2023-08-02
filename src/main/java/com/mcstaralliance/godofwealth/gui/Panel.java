@@ -57,11 +57,7 @@ public class Panel implements InventoryHolder {
     }
 
     public String getLuckyPlayer() {
-        if (!plugin.getConfig().getString("lucky-player-real-name").equals("")) {
-            return plugin.getConfig().getString("lucky-player-real-name");
-        } else {
-            return "无";
-        }
+        return plugin.getConfig().getString("lucky-player-real-name", "无");
     }
 
     public ItemStack createHead(Material material, String name, UUID uuid) {

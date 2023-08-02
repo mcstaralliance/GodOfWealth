@@ -42,7 +42,7 @@ public class CheckRunnable extends BukkitRunnable {
         boolean isDuringRewardTime = now.getHour() > plugin.getConfig().getInt("reward.after")
                 && now.getHour() < plugin.getConfig().getInt("selection.time");
         boolean isSelectionTime = now.getHour() == plugin.getConfig().getInt(("selection.time"));
-        OfflinePlayer player = Bukkit.getPlayer(UUID.fromString(plugin.getConfig().getString("lucky-player")));
+        OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(plugin.getConfig().getString("lucky-player")));
 
         if (tomorrowComes) {
             if (hasClearedData) {
@@ -68,7 +68,7 @@ public class CheckRunnable extends BukkitRunnable {
         if (isSelectionTime) {
             hasClearedData = false;
             selectLuckyPlayer();
-            player = Bukkit.getPlayer(UUID.fromString(plugin.getConfig().getString("lucky-player")));
+            player = Bukkit.getOfflinePlayer(UUID.fromString(plugin.getConfig().getString("lucky-player")));
             broadcastSelectedMessage(player);
         }
     }
