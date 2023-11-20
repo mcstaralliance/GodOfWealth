@@ -33,7 +33,7 @@ public class Panel implements InventoryHolder {
     public void setBorder() {
         String borderGlassPlainName = plugin.getConfig().getString("lang.border-glass-name");
         String borderGlassName = ConfigUtil.color(borderGlassPlainName);
-        ItemStack borderGlass = createOrangeStainedPane(Material.STAINED_GLASS_PANE, borderGlassName);
+        ItemStack borderGlass = createOrangeStainedPane(borderGlassName);
         arrangeBorder(borderGlass);
     }
 
@@ -52,7 +52,7 @@ public class Panel implements InventoryHolder {
     public void setInfoButton() {
         String headName = ConfigUtil.color(plugin.getConfig().getString("lang.head-name"));
         UUID uuid = UUID.fromString(plugin.getConfig().getString("lucky-player"));
-        ItemStack head = createHead(Material.SKULL_ITEM, headName, uuid);
+        ItemStack head = createHead(Material.LEGACY_SKULL_ITEM, headName, uuid);
         inv.setItem(13, head);
     }
 
@@ -88,11 +88,8 @@ public class Panel implements InventoryHolder {
                 .collect(Collectors.toList());
     }
 
-    public ItemStack createOrangeStainedPane(Material material, String name) {
-        Dye dye = new Dye();
-        dye.setColor(DyeColor.ORANGE);
-        ItemStack item = dye.toItemStack(1);
-        item.setType(material);
+    public ItemStack createOrangeStainedPane(String name) {
+        ItemStack item = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name);
         item.setItemMeta(meta);
