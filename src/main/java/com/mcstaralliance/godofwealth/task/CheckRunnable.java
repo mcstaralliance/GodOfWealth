@@ -19,6 +19,9 @@ public class CheckRunnable extends BukkitRunnable {
     private boolean hasClearedData = false;
 
     private void broadcastSelectedMessage(OfflinePlayer player) {
+        if (plugin.getConfig().getString("lucky-player-real-name").isEmpty()) {
+            return;
+        }
         String lang = plugin.getConfig().getString("lang.broadcast-selected-player").replaceAll("%player%", player.getName());
         Bukkit.broadcastMessage(ConfigUtil.color(lang));
     }
@@ -26,6 +29,7 @@ public class CheckRunnable extends BukkitRunnable {
     private void selectLuckyPlayer() {
         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
         if (players.isEmpty()) {
+            ConfigUtil.clearData();
             return;
         }
         Random random = new Random();
