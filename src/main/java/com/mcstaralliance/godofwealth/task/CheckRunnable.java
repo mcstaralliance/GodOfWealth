@@ -41,7 +41,7 @@ public class CheckRunnable extends BukkitRunnable {
         LocalTime now = LocalTime.now();
         boolean hasCompletedToday = plugin.getConfig().getBoolean("selection.hasCompletedToday");
         boolean tomorrowComes = now.getHour() == 0;
-        boolean isDuringRewardTime = now.getHour() > plugin.getConfig().getInt("reward.after")
+        boolean isDuringRewardTime = now.getHour() >= plugin.getConfig().getInt("reward.after")
                 && now.getHour() < plugin.getConfig().getInt("selection.time");
         boolean isSelectionTime = now.getHour() == plugin.getConfig().getInt(("selection.time"));
         OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(plugin.getConfig().getString("lucky-player")));
