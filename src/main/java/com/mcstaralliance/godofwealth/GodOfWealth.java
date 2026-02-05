@@ -12,6 +12,7 @@ import com.mcstaralliance.godofwealth.web.WebHandler;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -101,9 +102,14 @@ public final class GodOfWealth extends JavaPlugin {
         if (config.getBoolean("web.enable")) {
             setupJetty();
         }
+        metric();
 
     }
+    public void metric() {
+        int pluginId = 29319;
+        new Metrics(this, pluginId);
 
+    }
     @Override
     public void onDisable() {
         try {
